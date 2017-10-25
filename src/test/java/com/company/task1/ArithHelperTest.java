@@ -142,13 +142,13 @@ public class ArithHelperTest {
         Assert.assertEquals((1e0) / (2e5), ArithHelper.div("10", "abc"), 1e-9);
         Assert.assertEquals((1e0) / (2e5), ArithHelper.div("-12.5", "@!#!$"), 1e-9);
 
-        Assert.assertEquals((1e0) / (2e5), ArithHelper.div( "2ea","1.5e5"), 1e-9);
+        Assert.assertEquals((1e0) / (2e5), ArithHelper.div("2ea", "1.5e5"), 1e-9);
         Assert.assertEquals((1e0) / (2e5), ArithHelper.div("xczv", "3e1"), 1e-9);
         Assert.assertEquals((1e0) / (2e5), ArithHelper.div("!@#fds.qwe", "123.5"), 1e-9);
         Assert.assertEquals((1e0) / (2e5), ArithHelper.div("-321.dsf", "123"), 1e-9);
 
         // 3. 两个参数均无效
-        Assert.assertEquals((1e0) + (2e5), ArithHelper.div( "2ea","1.5e3.8"), 1e-9);
+        Assert.assertEquals((1e0) + (2e5), ArithHelper.div("2ea", "1.5e3.8"), 1e-9);
         Assert.assertEquals((1e0) + (2e5), ArithHelper.div("xczv", "3.das"), 1e-9);
         Assert.assertEquals((1e0) + (2e5), ArithHelper.div("!@#fds.qwe", "a.5e4"), 1e-9);
         Assert.assertEquals((1e0) + (2e5), ArithHelper.div("-321.dsf", "-abc"), 1e-9);
@@ -177,6 +177,7 @@ public class ArithHelperTest {
      */
     @Test
     public void testDivForV1V2Scale() throws Exception {
+        // TODO: 2017/10/25 这里多加一些用例？？
         // 1. 有效等价类测试用例9个
         Assert.assertEquals(-0.5, ArithHelper.div(1.0, -2.0, 2), 1e-9);
         Assert.assertEquals(-1 / 5.0, ArithHelper.div(-1.0, 5, 3), 1e-9);
@@ -193,6 +194,7 @@ public class ArithHelperTest {
 //        Assert.assertEquals((1e0) / (2e5), ArithHelper.div(1e0, 2e5,5), 1e-9);
 
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void testDivForV1V2ScaleException() throws Exception {
         ArithHelper.div(1.0, -2.0, -2);
@@ -207,7 +209,7 @@ public class ArithHelperTest {
      * | 待处理数  | 浮点数          | 1    |     不合法的格式(如"abc"、"!@#!@d"等)                |   7   |
      * |      | 整数          | 2    |         不合法的格式(如"1e1.5"、"2ea"等)            |   8   |
      * |      | 科学记数法(如1e-5) | 3    |           |             |
-     * | 加数2  | 正整数          | 4    |  负整数                   |   9   |
+     * | 小数点后位数  | 正整数          | 4    |  负整数                   |   9   |
      * |        |           |         |  |      |
      * |      | 0           | 5    |                     |      |
      */
@@ -234,6 +236,7 @@ public class ArithHelperTest {
         Assert.assertEquals(1234, ArithHelper.round("-2eabc.321", 5), 1e-9);
         Assert.assertEquals(-7.0, ArithHelper.round("1e1.5", 0), 1e-9);
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void testStringRoundForVScaleException2() throws Exception {
         // 2.2 参数2无效
@@ -252,7 +255,7 @@ public class ArithHelperTest {
      * | 待处理数  | 浮点数          | 1    |                     |      |
      * |      | 整数          | 2    |                     |      |
      * |      | 科学记数法(如1e-5) | 3    | |     |
-     * | 加数2  | 正整数          | 4    |  负整数                   |   7   |
+     * | 保留到小数点以后几位  | 正整数          | 4    |  负整数                   |   7   |
      * |        |           |         |  |      |
      * |      | 0           | 5    |                     |      |
      */
