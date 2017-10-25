@@ -101,10 +101,6 @@ public class ArithHelper {
         return b1.divide(b2, scale, java.math.BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    public void hello(){
-        System.out.println("asdf");
-    }
-
     /**
      * 提供精确的小数位四舍五入处理。
      *
