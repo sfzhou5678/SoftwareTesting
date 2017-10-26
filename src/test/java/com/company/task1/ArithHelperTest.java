@@ -8,7 +8,7 @@ import org.junit.After;
 /**
  * ArithHelper Tester.
  *
- * @author <Authors name>
+ * @author <sfzhou567>
  * @version 1.0
  * @since <pre>10/23/2017</pre>
  */
@@ -105,11 +105,11 @@ public class ArithHelperTest {
      * | 输入条件 | 有效等价类        | 编号   | 无效等价类               | 编号   |
      * | ---- | ------------ | ---- | ------------------- | ---- |
      * | 加数1  | 浮点数字符串          | 1    |        |      |
-     * |      | 非零整数字符串           | 2    |      零      |  7  |
-     * |      | 科学记数法(如1e-5)字符串 | 3    | 不合法的格式(如"1e1.5"、"2ea"、"abc"、"!@#!@d等) | 8    |
+     * |      | 非零整数字符串           | 2    |            |    |
+     * |      | 科学记数法(如1e-5)字符串 | 3    | 不合法的格式(如"1e1.5"、"2ea"、"abc"、"!@#!@d等) | 7    |
      * | 加数2  | 浮点数字符串          | 4    |         |      |
-     * |      | 非零整数字符串           | 5    |        零        |   9 |
-     * |      | 科学记数法(如1e-5)字符串 | 6    | 不合法的格式(如"1e1.5"、"2ea"、"abc"、"!@#!@d等) | 10   |
+     * |      | 非零整数字符串           | 5    |        零        |   8 |
+     * |      | 科学记数法(如1e-5)字符串 | 6    | 不合法的格式(如"1e1.5"、"2ea"、"abc"、"!@#!@d等) | 9   |
      *
      * @throws Exception
      */
@@ -125,32 +125,27 @@ public class ArithHelperTest {
         Assert.assertEquals(0, ArithHelper.div("0", "2e-5"), 1e-9);
 
         Assert.assertEquals((1.5e-5) / -2, ArithHelper.div("1.5e-5", "-2.0"), 1e-9);
-        Assert.assertEquals((-5e8) / 0.5, ArithHelper.div("-5e8", "0.5"), 1e-9);
+        Assert.assertEquals((-5e8) / 5, ArithHelper.div("-5e8", "5"), 1e-9);
         Assert.assertEquals((1e0) / (2e5), ArithHelper.div("1e0", "2e5"), 1e-9);
     }
 
     @Test(expected = ArithmeticException.class)
     public void testStringDivForV1V2Exception() throws Exception {
         // 2. 无效等价类测试用例
-        ArithHelper.div("1.5", "0");  // 1,9
-        ArithHelper.div("-2.3", "2ea");  // 1,10
-        ArithHelper.div("3", "0");  // 2,9
-        ArithHelper.div("-19", "2ea@!#");  // 2,10
-        ArithHelper.div("1e5", "0");  // 3,9
-        ArithHelper.div("-1.5e-3", "basd");  // 3,10
+        ArithHelper.div("1.5", "0");  // 1,8
+        ArithHelper.div("-2.3", "2ea");  // 1,9
+        ArithHelper.div("3", "0");  // 2,8
+        ArithHelper.div("-19", "2ea@!#");  // 2,9
+        ArithHelper.div("1e5", "0");  // 3,8
+        ArithHelper.div("-1.5e-3", "basd");  // 3,9
 
-        ArithHelper.div("0", "1e-5");  // 7,4
-        ArithHelper.div("qwers", "-3.5e-8");  // 8,4
-        ArithHelper.div("0", "1.5e-3");  // 7,5
-        ArithHelper.div("1e1.45", "-2.5e-8");  // 8,5
-        ArithHelper.div("0", "1e-5");  // 7,6
-        ArithHelper.div("@#!@#", "-8.5e-8");  // 8,6
+        ArithHelper.div("qwers", "-3.5e-8");  // 7,4
+        ArithHelper.div("1e1.45", "-2.5e-8");  // 7,5
+        ArithHelper.div("@#!@#", "-8.5e-8");  // 7,6
 
 
-        ArithHelper.div("0", "0");  // 7,9
-        ArithHelper.div("0", "-8.5e-8.5");  // 7,10
-        ArithHelper.div("asdf", "0");  // 8,9
-        ArithHelper.div("as@!#", "-8.5e-8.5");  // 8,10
+        ArithHelper.div("asdf", "0");  // 7,8
+        ArithHelper.div("as@!#", "-8.5e-8.5");  // 8,9
 
     }
 
@@ -189,26 +184,25 @@ public class ArithHelperTest {
      * |      | 整数           | 2    |                     |      |
      * |      | 科学记数法(如1e-5) | 3    |  |    |
      * | 加数2  | 浮点数          | 4    |                     |      |
-     * |      | 整数           | 5    |                     |      |
+     * |      | 整数           | 5    |       零        |   9  |
      * |      | 科学记数法(如1e-5) | 6    | |     |
-     * | 保留到小数点以后几位| 正整数|   7   |   负数 | 9  |
-     * |   0   |8 |
+     * | 保留到小数点以后几位| 正整数|   7   |   负数 | 10  |
+     * |              |           0   |        8 |     |       |
      */
     @Test
     public void testDivForV1V2Scale() throws Exception {
         // 1. 有效等价类测试用例9个
-        Assert.assertEquals(-0.5, ArithHelper.div(1.0, -2.0, 2), 1e-9);
-        Assert.assertEquals(-1 / 5.0, ArithHelper.div(-1.0, 5, 3), 1e-9);
+        Assert.assertEquals(-0.75, ArithHelper.div(1.5, -2.0, 2), 1e-9);
+        Assert.assertEquals(-1.5 / 5.0, ArithHelper.div(-1.5, 5, 3), 1e-9);
         Assert.assertEquals(85.5 / 2e-1, ArithHelper.div(85.5, 2e-1, 4), 1e-9);
 
         Assert.assertEquals(-12 / 2, ArithHelper.div(12, -2.0, 1), 1e-9);
         Assert.assertEquals(-5.5, ArithHelper.div(-11, 2, 5), 1e-9);
         Assert.assertEquals(0, ArithHelper.div(0, 2e-5, 1), 1e-9);
 
-        Assert.assertEquals((-5e8) / 0.5, ArithHelper.div(-5e8, 0.5, 8), 1e-9);
+        Assert.assertEquals((-5e8) / 5, ArithHelper.div(-5e8, 5, 8), 1e-9);
         Assert.assertEquals((1.5e-5) / -2.0, ArithHelper.div(1.5e-5, -2, 16), 1e-9);
-        // 检测出bug的用例：
-//        Assert.assertEquals((1e0) / (2e5), ArithHelper.div(1e0, 2e5,5), 1e-9);
+        Assert.assertEquals(1.0E-5, ArithHelper.div(1e0, 2e5,5), 1e-9);
 
         // round=0
         Assert.assertEquals(-1.0, ArithHelper.div(1.0, -2.0, 0), 1e-9);
@@ -224,14 +218,25 @@ public class ArithHelperTest {
         Assert.assertEquals((-5e8) / 0.5, ArithHelper.div(-5e8, 0.5, 0), 1e-9);
 
         // 2. pairwise
+        // FIXME: 2017/10/26 加入了新的，pairwise需要改一下
         Assert.assertEquals(-0.5, ArithHelper.div(1.0, -2.0, 2), 1e-9); // 1,4,7
         Assert.assertEquals(-12 / 2, ArithHelper.div(12, -2.0, 0), 1e-9);   // 2,4,8
         Assert.assertEquals(-2.2, ArithHelper.div(-11, 5, 5), 1e-9); // 2,5,7
         Assert.assertEquals(0.0, ArithHelper.div(1.5e-5, -2, 0), 1e-9);// 3,5,8
         Assert.assertEquals(1.5E-7, ArithHelper.div(1.5e-5, 1e2, 8), 1e-9);// 3,6,7
         Assert.assertEquals(0, ArithHelper.div(1.5, 1e2, 0), 1e-9);// 1,6,8
-        Assert.assertEquals(19.1, ArithHelper.div(38.2, 2, 3), 1e-9);// 1,5,7
-        Assert.assertEquals(1, ArithHelper.div(100, 1e2, 0), 1e-9);// 2,6,8
+
+
+        // IllegalArgumentException
+//        ArithHelper.div(1.5e-5, 1.5, -8);   //3,4,10
+//        ArithHelper.div(1.5, 1.5, -8);   //1,5,10
+//        ArithHelper.div(1, 1e2, -8);   //2,6,10
+//        ArithHelper.div(1.5e-5, 0, -8);   //3,9,10
+
+        //ArithmeticException
+        ArithHelper.div(1.5, 0, 4);   //1,9,7
+        ArithHelper.div(1.5e-5, 0, 0);   //2,9,8
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -247,6 +252,17 @@ public class ArithHelperTest {
         ArithHelper.div(-5e8, 0.5, -8);
         ArithHelper.div(1.5e-5, -2.0, -16);
         ArithHelper.div(1e0, 2e5, -5);
+
+
+        ArithHelper.div(-1.5, 0, 3);
+        ArithHelper.div(-11, 0, 5);
+        ArithHelper.div(1e5, 0, 8);
+        ArithHelper.div(1.0, 0, 0);
+        ArithHelper.div(12, 0, 0);
+        ArithHelper.div(1e0, 0, 0);
+        ArithHelper.div(-1.3, 0, -3);
+        ArithHelper.div(-1, 0, -5);
+        ArithHelper.div(-5e8, 0, -8);
     }
 
 

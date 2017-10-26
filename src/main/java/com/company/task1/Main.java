@@ -14,5 +14,8 @@ public class Main {
         result=cal.calculate(s);
         System.out.println(result);
         System.out.println(9.5+(3-1)*3+10/2+45);
+
+        System.out.println(ArithHelper.div(1e0, 2e5,5));
+        System.out.println((1e0) / (2e5));
     }
 }
